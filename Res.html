@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select {
+            border-radius: 5px;
+        }
+        .password-strength-indicator {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .weak {
+            color: red;
+        }
+        .medium {
+            color: orange;
+        }
+        .strong {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-container">
+                    <h2 class="text-center mb-4">Student Registration Form</h2>
+                    <form id="registrationForm" action="process_form.php" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student_id">Student ID:</label>
+                            <input type="text" class="form-control" id="student_id" name="student_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Department:</label>
+                            <select class="form-control" id="department" name="department" required>
+                                <option value="">Select Department</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <small id="emailHelp" class="form-text text-muted">Only emails with "uiu.ac.bd" domain are accepted.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <div class="password-strength-indicator" id="password-strength"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="retype_password">Retype Password:</label>
+                            <input type="password" class="form-control" id="retype_password" name="retype_password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        // Password strength indicator function
+        function checkPasswordStrength() {
+            var password = document.getElementById("password").value;
+            var strengthIndicator = document.getElementById("password-strength");
+            var strength = 0;
+            
+            if (password.match(/[a-z]+/)) {
+                strength += 1;
+            }
+            if (password.match(/[A-Z]+/)) {
+                strength += 1;
+            }
+            if (password.match(/[0-9]+/)) {
+                strength += 1;
+            }
+            if (password.match(/[!@#$%^&*()]+/)) {
+                strength += 1;
+            }
+            if (password.length >= 8) {
+                strength += 1;
+            }
+
+            if (strength == 0) {
+                strengthIndicator.innerHTML = "Password strength: Weak";
+                strengthIndicator.className = "password-strength-indicator weak";
+            } else if (strength <= 2) {
+                strengthIndicator.innerHTML = "Password strength: Medium";
+                strengthIndicator.className = "password-strength-indicator medium";
+            } else {
+                strengthIndicator.innerHTML = "Password strength: Strong";
+                strengthIndicator.className = "password-strength-indicator strong";
+            }
+        }
+
+        // Password strength check on input
+        document.getElementById("password").addEventListener("input", checkPasswordStrength);
+
+        // Email validation function
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var emailHelp = document.getElementById("emailHelp");
+            if (!email.endsWith("@uiu.ac.bd")) {
+                emailHelp.innerHTML = "Only emails with 'uiu.ac.bd' domain are accepted.";
+                emailHelp.style.color = "red";
+                return false;
+            }
+            emailHelp.innerHTML = "Email format is valid.";
+            emailHelp.style.color = "green";
+            return true;
+        }
+
+        // Email validation on input
+        document.getElementById("email").addEventListener("input", validateEmail);
+
+        // Form submission validation
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            if (!validateEmail()) {
+                event.preventDefault();
+            }
+            // Add additional validation checks if needed
+        });
+    </script>
+</body>
+</html>
